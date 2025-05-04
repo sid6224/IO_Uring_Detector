@@ -1,6 +1,106 @@
 # IO_Uring Detector
 
-A cross-platform tool to detect io_uring usage on Linux systems. This tool checks if the Linux kernel supports io_uring (requires kernel 5.1+) and identifies any processes using it.
+A Rust-based tool for detecting and monitoring processes using io_uring for I/O operations.
+
+## Project Structure
+
+The project consists of two main components:
+
+```
+.
+├── io_uring_detector/          # Main detector binary
+│   ├── src/
+│   │   └── main.rs            # Detector implementation
+│   ├── Cargo.toml             # Rust dependencies and configuration
+│   └── build.sh               # Build script for the detector
+│
+└── io_uring_test/             # Test binary
+    ├── src/
+    │   └── main.rs            # Test implementation
+    ├── Cargo.toml             # Rust dependencies and configuration
+    └── build.sh               # Build script for the test binary
+```
+
+### Component Descriptions
+
+1. **io_uring_detector**
+   - `main.rs`: Implements the core detection logic for processes using io_uring
+   - `build.sh`: Script to build a statically linked binary for Linux
+   - `Cargo.toml`: Defines dependencies and build configuration
+
+2. **io_uring_test**
+   - `main.rs`: Creates test processes that use io_uring for I/O operations
+   - `build.sh`: Script to build a statically linked binary for Linux
+   - `Cargo.toml`: Defines dependencies and build configuration
+
+## Building the Binaries
+
+### Prerequisites
+
+- Rust toolchain (latest stable)
+- Cross-compilation toolchain for Linux
+- Docker (for building statically linked binaries)
+
+### Building Statically Linked Binaries
+
+1. **Build the Detector**:
+   ```bash
+   cd io_uring_detector
+   ./build.sh
+   ```
+   This will create a statically linked binary at `target/x86_64-unknown-linux-musl/release/io_uring_detector`
+
+2. **Build the Test Binary**:
+   ```bash
+   cd io_uring_test
+   ./build.sh
+   ```
+   This will create a statically linked binary at `target/x86_64-unknown-linux-musl/release/io_uring_test`
+
+The build scripts use Docker to create statically linked binaries that can run on any Linux system without dependencies.
+
+## Testing
+
+### Running the Test Binary
+
+1. Start the test binary:
+   ```bash
+   ./io_uring_test/target/x86_64-unknown-linux-musl/release/io_uring_test
+   ```
+   This will create processes that use io_uring for I/O operations.
+
+### Running the Detector
+
+1. In a separate terminal, run the detector:
+   ```bash
+   ./io_uring_detector/target/x86_64-unknown-linux-musl/release/io_uring_detector
+   ```
+   The detector will scan for processes using io_uring and display their PIDs.
+
+### Expected Output
+
+When running both binaries:
+
+1. The test binary will create processes that use io_uring
+2. The detector will output something like:
+   ```
+   Scanning for io_uring processes...
+   Found process using io_uring: PID 1234
+   Found process using io_uring: PID 1235
+   ```
+
+## Troubleshooting
+
+If you encounter issues:
+
+1. Ensure you have the required build dependencies installed
+2. Check that Docker is running if using the build scripts
+3. Verify that the binaries have execute permissions
+4. Make sure you're running the binaries on a Linux system with io_uring support
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Features
 
@@ -15,29 +115,6 @@ A cross-platform tool to detect io_uring usage on Linux systems. This tool check
 
 - Linux kernel 5.1 or later
 - Any architecture supported by io_uring (x86_64, ARM, ARM64, etc.)
-
-## Building
-
-The project uses Rust and can be built for multiple architectures using the provided build script:
-
-```bash
-# Build for default architecture (x86_64)
-./build.sh
-
-# Build for specific architecture
-./build.sh --arch aarch64  # For ARM64
-./build.sh --arch arm      # For 32-bit ARM
-./build.sh --arch armv7    # For ARMv7
-```
-
-Supported architectures:
-- x86_64 (default)
-- aarch64 (ARM64)
-- arm (32-bit ARM)
-- armv7 (ARMv7)
-- riscv64 (RISC-V 64-bit)
-- powerpc64 (PowerPC 64-bit)
-- s390x (IBM System z)
 
 ## Usage
 
@@ -80,10 +157,6 @@ Process using io_uring:
   Virtual Memory: 123456 kB
   Resident Memory: 78901 kB
 ```
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
