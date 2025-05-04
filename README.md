@@ -1,6 +1,20 @@
 # IO_Uring Detector
 
-A Rust-based tool for detecting and monitoring processes using io_uring for I/O operations.
+A Rust-based tool for detecting and monitoring processes using io_uring for I/O operations. This project helps identify potential security risks by detecting processes that utilize io_uring, which can be used to bypass traditional system call monitoring.
+
+## Security Context and Motivation
+
+The io_uring interface in Linux, while providing efficient asynchronous I/O operations, has been identified as a potential security risk. According to recent research by ARMO Security, io_uring can be exploited to bypass traditional system call monitoring used by many security tools. This creates a blind spot in Linux runtime security, as malicious processes can perform I/O operations without triggering standard system call monitoring.
+
+Key findings from the research:
+- io_uring allows processes to perform I/O operations without using traditional system calls
+- Many security tools relying on system call monitoring are "blind" to io_uring-based operations
+- This vulnerability affects major security solutions including Falco, Tetragon, and Microsoft Defender
+- The issue is particularly relevant in cloud-native environments where Linux is widely used
+
+This project aims to help identify and monitor processes using io_uring, providing visibility into potential security risks and helping organizations maintain better security posture in their Linux environments.
+
+[Reference: ARMO Security Research on io_uring](https://www.armosec.io/blog/io_uring-rootkit-bypasses-linux-security/)
 
 ## Project Structure
 
