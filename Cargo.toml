@@ -2,7 +2,7 @@
 name = "io_uring_detector"
 version = "0.1.0"
 edition = "2021"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["sid6224"]
 description = "A tool to detect io_uring usage on Linux systems"
 
 [dependencies]
