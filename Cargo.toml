@@ -7,7 +7,8 @@ description = "A tool to detect io_uring usage on Linux systems"
 
 [dependencies]
 libc = "0.2"
-nix = { version = "0.27", features = ["feature"] }
+nix = { version = "0.27", features = ["utsname"] }
+io-uring = "0.6"
 
 [profile.release]
 opt-level = 3
