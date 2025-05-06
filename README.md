@@ -10,7 +10,7 @@ Key findings from the research:
 - io_uring allows processes to perform I/O operations without using traditional system calls
 - Many security tools relying on system call monitoring are "blind" to io_uring-based operations
 - This vulnerability affects major security solutions including Falco, Tetragon, and Microsoft Defender
-- The issue is particularly relevant in cloud-native environments where Linux is widely used
+- The issue affects any Linux system with kernel version 5.1 or above, regardless of the environment
 
 This project aims to help identify and monitor processes using io_uring, providing visibility into potential security risks and helping organizations maintain better security posture in their Linux environments.
 
@@ -53,7 +53,13 @@ The project consists of two main components:
 
 - Rust toolchain (latest stable)
 - Cross-compilation toolchain for Linux
-- Docker (for building statically linked binaries)
+- Required Rust crates:
+  - `cross` for cross-compilation
+  - `musl-tools` for static linking
+  - `libc` for system calls
+  - `nix` for Unix system calls
+  - `procfs` for process information
+  - `clap` for command-line argument parsing
 
 ### Building Statically Linked Binaries
 
